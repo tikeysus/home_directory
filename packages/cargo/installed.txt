@@ -1,0 +1,2 @@
+cargo-modules v0.25.0
+evcxr_repl v0.19.0

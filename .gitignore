@@ -1,0 +1,31 @@
+.DS_Store
+
+# Shell/editor history and generated local state
+*.history
+.zsh_history
+.bash_history
+.python_history
+.viminfo
+.lesshst
+.z
+.zcompdump*
+.zsh_sessions/
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_*
+known_hosts*
+config/vscode/User/globalStorage/
+config/vscode/User/workspaceStorage/
+config/vscode/User/*.vscdb
+config/vscode/User/*.backup
+config/vscode/User/mcp.json
+
+# Local overrides for machine-specific values
+*.local
+*.local.*
+local/

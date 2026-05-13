@@ -1,0 +1,66 @@
+tap "homebrew/services"
+# Command-line interface for Cabal and Hackage
+brew "cabal-install"
+# Cross-platform make
+brew "cmake"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
+# Functional metaprogramming aware language built on Erlang VM
+brew "elixir"
+# GNU compiler collection
+brew "gcc"
+# GNU debugger
+brew "gdb"
+# Cross-platform program for developing Haskell projects
+brew "haskell-stack"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Software environment for statistical computing
+brew "r"
+# Safe, concurrent, practical language
+brew "rust"
+# Steel Bank Common Lisp system
+brew "sbcl"
+# User interface to the TELNET protocol
+brew "telnet"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Network analyzer and capture tool - without graphical user interface
+brew "wireshark"
+# Web browser focusing on privacy
+cask "brave-browser"
+# Text editor
+cask "emacs-app"
+# Web browser
+cask "google-chrome"
+# Terminal emulator as alternative to Apple's Terminal app
+cask "iterm2"
+# Tool for designing and simulating digital logic circuits
+cask "logisim"
+# Replacement for Docker Desktop
+cask "orbstack"
+# Create, manage, and run virtual machines
+cask "vmware-fusion"
+# Network protocol analyzer
+cask "wireshark-app"
+vscode "docker.docker"
+vscode "formulahendry.code-runner"
+vscode "github.vscode-github-actions"
+vscode "mgmcdermott.vscode-language-babel"
+vscode "ms-python.debugpy"
+vscode "ms-python.python"
+vscode "ms-python.vscode-pylance"
+vscode "ms-python.vscode-python-envs"
+vscode "ms-vscode-remote.remote-containers"
+vscode "ms-vscode.cpp-devtools"
+vscode "ms-vscode.cpptools"
+vscode "ms-vscode.cpptools-extension-pack"
+vscode "ms-vscode.cpptools-themes"
+vscode "rust-lang.rust-analyzer"
+vscode "vadimcn.vscode-lldb"
+vscode "visualstudioexptteam.intellicode-api-usage-examples"
+vscode "visualstudioexptteam.vscodeintellicode"
+cargo "cargo-modules"
+cargo "evcxr_repl"

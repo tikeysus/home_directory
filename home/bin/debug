@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+file="$1"
+
+if [ -z "$file" ]; then
+  echo "Usage: debug file.c"
+  exit 1
+fi
+
+if [[ "$file" != *.c ]]; then
+  echo "Expected a .c file"
+  exit 1
+fi
+
+out="${file%.c}"
+
+mkdir -p build
+clang -g "$file" -o build/"$out"
+
+if [ $? -eq 0 ]; then
+  echo "Built debug executable: $out"
+fi
