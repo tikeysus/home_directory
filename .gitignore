@@ -1,6 +1,9 @@
 .DS_Store
 
 # Shell/editor history and generated local state
+build/
+home/Library/
+*.dSYM/
 *.history
 .zsh_history
 .bash_history

@@ -1,0 +1,40 @@
+# Personal LLDB defaults. This file is linked to ~/.lldbinit by scripts/link-home.sh.
+
+# Keep source-focused stops readable, and only show disassembly when explicitly requested.
+settings set stop-disassembly-display never
+settings set stop-line-count-before 4
+settings set stop-line-count-after 4
+
+# Prefer stepping through user code instead of runtime/library plumbing.
+settings set target.inline-breakpoint-strategy always
+settings set target.process.thread.step-avoid-regexp ^std::|^__|^objc_|^swift_|^dyld|^libsystem_|^_pthread
+
+# Load personal Python commands.
+command script import ~/.lldb/lldbutils.py
+
+# Breakpoints.
+command alias bfl breakpoint set --file %1 --line %2
+command alias bfn breakpoint set --name %1
+command alias bl breakpoint list
+command alias bd breakpoint delete
+command alias bdis breakpoint disable
+command alias ben breakpoint enable
+
+# Process control.
+command alias rr process launch
+command alias symtab target modules dump symtab
+
+# Inspection.
+command alias fs frame select
+command alias up1 up
+command alias down1 down
+command alias btall thread backtrace all
+command alias locals frame variable --show-types
+command alias regs register read
+command alias disf disassemble --frame
+command alias im image lookup
+
+# Memory and expressions.
+command alias xw memory read --format x --size 4 --count %1 %2
+command alias xg memory read --format x --size 8 --count %1 %2
+command alias ptype expression --show-types -- %1

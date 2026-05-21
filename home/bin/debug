@@ -1,22 +1,102 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-file="$1"
+usage() {
+  cat <<'EOF'
+Usage:
+  debug [--build-only] [--run] source.c [-- program args...]
+  debug [--build-only] [--run] source.cpp [-- program args...]
+  debug [--run] ./existing-executable [-- program args...]
 
-if [ -z "$file" ]; then
-  echo "Usage: debug file.c"
+Compiles supported source files with debug symbols into build/debug/ and opens LLDB.
+EOF
+}
+
+if [[ $# -eq 0 || "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+build_only=false
+run_immediately=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --build-only)
+      build_only=true
+      shift
+      ;;
+    --run)
+      run_immediately=true
+      shift
+      ;;
+    --)
+      break
+      ;;
+    -*)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+if [[ $# -eq 0 ]]; then
+  usage
   exit 1
 fi
 
-if [[ "$file" != *.c ]]; then
-  echo "Expected a .c file"
+input="$1"
+shift
+
+program_args=()
+if [[ "${1:-}" == "--" ]]; then
+  shift
+  program_args=("$@")
+elif [[ $# -gt 0 ]]; then
+  echo "Pass program arguments after --"
   exit 1
 fi
 
-out="${file%.c}"
+if [[ ! -e "$input" ]]; then
+  echo "Not found: $input"
+  exit 1
+fi
 
-mkdir -p build
-clang -g "$file" -o build/"$out"
+mkdir -p build/debug
 
-if [ $? -eq 0 ]; then
-  echo "Built debug executable: $out"
+case "$input" in
+  *.c)
+    name="$(basename "${input%.c}")"
+    out="build/debug/$name"
+    clang -g -O0 -Wall -Wextra "$input" -o "$out"
+    ;;
+  *.cc|*.cpp|*.cxx)
+    name="$(basename "${input%.*}")"
+    out="build/debug/$name"
+    clang++ -g -O0 -Wall -Wextra -std=c++20 "$input" -o "$out"
+    ;;
+  *)
+    if [[ -x "$input" && ! -d "$input" ]]; then
+      out="$input"
+    else
+      echo "Expected a .c/.cc/.cpp/.cxx source file or an executable"
+      exit 1
+    fi
+    ;;
+esac
+
+echo "LLDB target: $out"
+if [[ "$build_only" == true ]]; then
+  exit 0
+elif [[ "$run_immediately" == true && ${#program_args[@]} -gt 0 ]]; then
+  lldb -o run -- "$out" "${program_args[@]}"
+elif [[ "$run_immediately" == true ]]; then
+  lldb -o run "$out"
+elif [[ ${#program_args[@]} -gt 0 ]]; then
+  lldb -- "$out" "${program_args[@]}"
+else
+  lldb "$out"
 fi
