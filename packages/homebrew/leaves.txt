@@ -1,0 +1,15 @@
+cabal-install
+cmake
+coreutils
+docker
+elixir
+gdb
+gh
+haskell-stack
+node
+r
+rust
+sbcl
+telnet
+tree
+wireshark

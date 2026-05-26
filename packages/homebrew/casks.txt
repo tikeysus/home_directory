@@ -1,0 +1,8 @@
+brave-browser 1.63.169.0
+emacs-app 29.4-1
+google-chrome 130.0.6723.117
+iterm2 3.6.5
+logisim 2.7.1
+orbstack 1.9.5_18849
+vmware-fusion 13.6.1,24319021
+wireshark-app 4.6.3

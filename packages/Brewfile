@@ -13,6 +13,8 @@ brew "elixir"
 brew "gcc"
 # GNU debugger
 brew "gdb"
+# GitHub command-line tool
+brew "gh"
 # Cross-platform program for developing Haskell projects
 brew "haskell-stack"
 # Open-source, cross-platform JavaScript runtime environment
@@ -64,3 +66,5 @@ vscode "visualstudioexptteam.intellicode-api-usage-examples"
 vscode "visualstudioexptteam.vscodeintellicode"
 cargo "cargo-modules"
 cargo "evcxr_repl"
+npm "@openai/codex"
+npm "corepack"

@@ -21,6 +21,7 @@ Personal home-directory setup: dotfiles, editor settings, package manifests, and
 │   └── vscode/User/
 ├── packages/              # Reinstall manifests and package snapshots
 │   ├── Brewfile
+│   ├── homebrew/
 │   ├── vscode/extensions.txt
 │   ├── npm/global-packages.txt
 │   └── cargo/installed.txt
@@ -44,6 +45,10 @@ From this repo:
 `link-home.sh` symlinks every file under `home/` into the matching location under `$HOME`. If a real file already exists, it is moved aside with a timestamped `.backup-*` suffix before the symlink is created.
 
 `link-app-configs.sh` links app-specific files that live outside normal dotfile paths, currently VS Code user settings and keybindings.
+
+`install-packages.sh` installs Homebrew if needed, restores packages from `packages/Brewfile`, installs global npm packages from `packages/npm/global-packages.txt`, and installs Cargo tools from `packages/cargo/installed.txt`. The Brewfile is the main Homebrew restore manifest. `packages/homebrew/` keeps snapshot details such as installed formula versions, casks, taps, leaves, services, and `brew config`.
+
+`snapshot.sh` refreshes package manifests from the current machine, including Homebrew, VS Code, npm, and Cargo snapshots.
 
 `restore-iterm2.sh` imports the tracked iTerm2 preference plist. Quit iTerm2 first if you want the restore to be clean.
 

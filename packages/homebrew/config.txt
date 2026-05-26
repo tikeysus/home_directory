@@ -1,0 +1,22 @@
+HOMEBREW_VERSION: 5.1.14
+ORIGIN: https://github.com/Homebrew/brew
+HEAD: 10a163ac127624caa80cc5cc5a705e97f3615b0e
+Last commit: 2 days ago
+Branch: stable
+Core tap JSON: 26 May 18:33 UTC
+Core cask tap JSON: 26 May 18:33 UTC
+HOMEBREW_PREFIX: /opt/homebrew
+HOMEBREW_CASK_OPTS: []
+HOMEBREW_DOWNLOAD_CONCURRENCY: 16
+HOMEBREW_FORBID_PACKAGES_FROM_PATHS: set
+HOMEBREW_MAKE_JOBS: 8
+HOMEBREW_NO_COLOR: set
+Homebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby
+CPU: octa-core 64-bit arm_ibiza
+Clang: 15.0.0 build 1500
+Git: 2.39.3 => /Library/Developer/CommandLineTools/usr/bin/git
+Curl: 8.7.1 => /usr/bin/curl
+macOS: 15.2-arm64
+CLT: 15.1.0.0.1.1700200546
+Xcode: N/A
+Rosetta 2: false
