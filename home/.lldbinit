@@ -13,7 +13,6 @@ settings set target.process.thread.step-avoid-regexp ^std::|^__|^objc_|^swift_|^
 command script import ~/.lldb/lldbutils.py
 
 # Breakpoints.
-command alias bfl breakpoint set --file %1 --line %2
 command alias bfn breakpoint set --name %1
 command alias bl breakpoint list
 command alias bd breakpoint delete
@@ -22,6 +21,7 @@ command alias ben breakpoint enable
 
 # Process control.
 command alias rr process launch
+command alias so finish
 command alias symtab target modules dump symtab
 
 # Inspection.

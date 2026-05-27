@@ -37,6 +37,12 @@ Only compile, useful for checking warnings:
 debug --build-only file.cpp
 ```
 
+`debug` builds C and C++ targets with debug symbols and no optimization:
+
+```sh
+clang/clang++ -g -O0 -fno-omit-frame-pointer
+```
+
 Open an existing executable:
 
 ```sh
@@ -49,12 +55,14 @@ debug ./program -- arg1 arg2
 - `ctx`: show selected frame, nearby source, and typed locals.
 - `cbt`: compact backtrace.
 - `bmain`: set a breakpoint on `main`.
+- `loopskip i=37`: from the current source line, continue until that same line is reached with `i == 37`.
+- `loopbreak <line>`: run naturally until the given line, typically the first line after a loop.
+- `lookskip i=37`: compatibility alias for `loopskip`.
 - `target_paths`: show executable, working directory, and current source path.
 - `reload_lldbinit`: reload `~/.lldbinit` after editing it.
 
 ## Personal Aliases
 
-- `bfl file.c 42`: breakpoint by file and line.
 - `bfn name`: breakpoint by function name.
 - `bl`, `bd`, `bdis`, `ben`: list, delete, disable, and enable breakpoints.
 - `rr`: launch again.

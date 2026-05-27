@@ -19,6 +19,8 @@ fi
 
 build_only=false
 run_immediately=false
+debug_c_flags=(-g -O0 -fno-omit-frame-pointer -Wall -Wextra)
+debug_cxx_flags=(-g -O0 -fno-omit-frame-pointer -Wall -Wextra -std=c++20)
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -71,12 +73,12 @@ case "$input" in
   *.c)
     name="$(basename "${input%.c}")"
     out="build/debug/$name"
-    clang -g -O0 -Wall -Wextra "$input" -o "$out"
+    clang "${debug_c_flags[@]}" "$input" -o "$out"
     ;;
   *.cc|*.cpp|*.cxx)
     name="$(basename "${input%.*}")"
     out="build/debug/$name"
-    clang++ -g -O0 -Wall -Wextra -std=c++20 "$input" -o "$out"
+    clang++ "${debug_cxx_flags[@]}" "$input" -o "$out"
     ;;
   *)
     if [[ -x "$input" && ! -d "$input" ]]; then

@@ -1,6 +1,7 @@
 """Small personal LLDB commands loaded from ~/.lldbinit."""
 
 import os
+import re
 import shlex
 import time
 
@@ -25,6 +26,34 @@ def _selected_frame(debugger):
 
 def _print(result, text=""):
     print(text, file=result)
+
+
+def _current_source_location(debugger):
+    frame = _selected_frame(debugger)
+    if frame is None:
+        return None, None
+
+    line_entry = frame.GetLineEntry()
+    file_spec = line_entry.GetFileSpec()
+    if not file_spec or not file_spec.IsValid() or line_entry.GetLine() == 0:
+        return None, None
+
+    return file_spec.GetPath(), line_entry.GetLine()
+
+
+def _normalize_condition(command):
+    condition = command.strip()
+    if not condition:
+        return ""
+
+    if re.search(r"==|!=|<=|>=|<|>", condition):
+        return condition
+
+    match = re.fullmatch(r"([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)", condition)
+    if match:
+        return f"{match.group(1)} == {match.group(2).strip()}"
+
+    return condition
 
 
 def ctx(debugger, command, result, internal_dict):
@@ -112,6 +141,48 @@ def target_paths(debugger, command, result, internal_dict):
             _print(result, f"src: {file_spec.GetPath()}:{line_entry.GetLine()}")
 
 
+def loopskip(debugger, command, result, internal_dict):
+    """Continue until the current source line is reached with a condition true."""
+    condition = _normalize_condition(command)
+    if not condition:
+        _print(result, "Usage: loopskip i=37")
+        return
+
+    path, line = _current_source_location(debugger)
+    if path is None:
+        _print(result, "No source line selected. Stop inside a running program first.")
+        return
+
+    cmd = (
+        "breakpoint set --one-shot true "
+        f"--file {shlex.quote(path)} --line {line} "
+        f"--condition {shlex.quote(condition)}"
+    )
+    _print(result, f"Continuing until {os.path.basename(path)}:{line} where {condition}")
+    debugger.HandleCommand(cmd)
+    debugger.HandleCommand("continue")
+
+
+def lookskip(debugger, command, result, internal_dict):
+    """Compatibility alias for loopskip."""
+    loopskip(debugger, command, result, internal_dict)
+
+
+def loopbreak(debugger, command, result, internal_dict):
+    """Run naturally until a line, typically the first line after a loop."""
+    args = shlex.split(command)
+    if len(args) != 1 or not args[0].isdigit():
+        _print(result, "Usage: loopbreak <line>")
+        return
+
+    if _selected_frame(debugger) is None:
+        _print(result, "No selected frame. Stop inside a running program first.")
+        return
+
+    _print(result, f"Running until line {args[0]}")
+    debugger.HandleCommand(f"thread until {args[0]}")
+
+
 def __lldb_init_module(debugger, internal_dict):
     debugger.HandleCommand('command script add -f lldbutils.ctx ctx -h "Show source context and locals"')
     debugger.HandleCommand('command script add -f lldbutils.cbt cbt -h "Compact backtrace"')
@@ -119,3 +190,6 @@ def __lldb_init_module(debugger, internal_dict):
     debugger.HandleCommand('command script add -f lldbutils.rehearse rehearse -h "Practice menu for common LLDB moves"')
     debugger.HandleCommand('command script add -f lldbutils.reload_lldbinit reload_lldbinit -h "Reload ~/.lldbinit"')
     debugger.HandleCommand('command script add -f lldbutils.target_paths target_paths -h "Show target paths"')
+    debugger.HandleCommand('command script add -f lldbutils.loopskip loopskip -h "Continue until current loop line matches a condition"')
+    debugger.HandleCommand('command script add -f lldbutils.lookskip lookskip -h "Alias for loopskip"')
+    debugger.HandleCommand('command script add -f lldbutils.loopbreak loopbreak -h "Run until a line after a loop"')
