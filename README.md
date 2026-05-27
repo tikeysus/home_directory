@@ -14,7 +14,6 @@ Personal home-directory setup: dotfiles, editor settings, package manifests, and
 │   ├── bin/
 │   ├── .emacs.d/
 │   ├── .ssh/config
-│   ├── .stack/
 │   └── .config/
 ├── config/                # App configs outside $HOME dotfile paths
 │   ├── iterm2/
@@ -23,7 +22,6 @@ Personal home-directory setup: dotfiles, editor settings, package manifests, and
 │   ├── Brewfile
 │   ├── homebrew/
 │   ├── vscode/extensions.txt
-│   ├── npm/global-packages.txt
 │   └── cargo/installed.txt
 ├── scripts/               # Idempotent setup helpers
 └── docs/                  # Notes about manual setup and excluded files
@@ -42,13 +40,40 @@ From this repo:
 ./scripts/restore-iterm2.sh
 ```
 
+## Updating This Repo
+
+When your local environment changes, refresh the tracked snapshot from this machine:
+
+```sh
+make snapshot
+```
+
+This updates Homebrew, Cargo, VS Code extensions, VS Code settings/keybindings, and iTerm2 preferences, then validates the tracked files and prints the git diff/status.
+
+Common flow:
+
+```sh
+brew install foo
+make snapshot
+git diff
+make snapshot-commit
+```
+
+After iTerm2 or VS Code settings change, use the same `make snapshot` flow. For ordinary dotfile edits, edit the files in this repo directly and commit normally.
+
+If the snapshot looks good and you want one command to commit and push it:
+
+```sh
+make snapshot-push
+```
+
 `link-home.sh` symlinks every file under `home/` into the matching location under `$HOME`. If a real file already exists, it is moved aside with a timestamped `.backup-*` suffix before the symlink is created.
 
 `link-app-configs.sh` links app-specific files that live outside normal dotfile paths, currently VS Code user settings and keybindings.
 
-`install-packages.sh` installs Homebrew if needed, restores packages from `packages/Brewfile`, installs global npm packages from `packages/npm/global-packages.txt`, and installs Cargo tools from `packages/cargo/installed.txt`. The Brewfile is the main Homebrew restore manifest. `packages/homebrew/` keeps snapshot details such as installed formula versions, casks, taps, leaves, services, and `brew config`.
+`install-packages.sh` installs Homebrew if needed, restores packages from `packages/Brewfile`, and installs Cargo tools from `packages/cargo/installed.txt`. The Brewfile is the main Homebrew restore manifest. `packages/homebrew/` keeps snapshot details such as installed formula versions, casks, taps, leaves, services, and `brew config`.
 
-`snapshot.sh` refreshes package manifests from the current machine, including Homebrew, VS Code, npm, and Cargo snapshots.
+`snapshot.sh` refreshes package manifests from the current machine, including Homebrew, VS Code, and Cargo snapshots.
 
 `restore-iterm2.sh` imports the tracked iTerm2 preference plist. Quit iTerm2 first if you want the restore to be clean.
 
@@ -59,8 +84,8 @@ Note: files like `.zshrc` and `.vimrc` are hidden dotfiles. Use `ls -la home` to
 - Shell config: zsh profile, aliases, functions, prompt/tool integration.
 - Git config: global Git preferences and ignores.
 - Editors: Vim, Emacs, VS Code settings, keybindings, snippets, and extension lists.
-- Package manifests: Homebrew, VS Code extensions, npm globals, Cargo-installed tools.
-- Language/tool config: Cabal, Stack, Rust, Python, Docker, terminal, window manager, and other deliberate config.
+- Package manifests: Homebrew, VS Code extensions, and Cargo-installed tools.
+- Language/tool config: Rust, Python, Docker, terminal, window manager, and other deliberate config.
 - Setup scripts: repeatable, safe-to-rerun commands for a fresh machine.
 
 ## What Should Stay Out

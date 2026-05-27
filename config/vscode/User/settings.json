@@ -10,7 +10,6 @@
     "editor.suggest.enabled": false,
     "editor.minimap.enabled": false,
     "files.autoSave": "afterDelay",
-    "haskell.manageHLS": "GHCup",
     "github.copilot.advanced": {
         "authProvider": "github"
     },

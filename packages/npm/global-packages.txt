@@ -1,3 +1,0 @@
-@openai/codex@0.130.0
-corepack@0.32.0
-npm@11.3.0

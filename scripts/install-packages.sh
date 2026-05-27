@@ -26,13 +26,6 @@ else
   echo "Skipping Homebrew packages: brew or packages/Brewfile missing."
 fi
 
-if command -v npm >/dev/null 2>&1 && [[ -f "$repo_root/packages/npm/global-packages.txt" ]]; then
-  while IFS= read -r package; do
-    [[ -z "$package" || "$package" == \#* ]] && continue
-    npm install -g "$package"
-  done < "$repo_root/packages/npm/global-packages.txt"
-fi
-
 if command -v cargo >/dev/null 2>&1 && [[ -f "$repo_root/packages/cargo/installed.txt" ]]; then
   while IFS= read -r line; do
     [[ "$line" =~ ^([^[:space:]]+)[[:space:]]v([^:]+):$ ]] || continue

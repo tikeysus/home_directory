@@ -2,6 +2,8 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+vscode_user_dir="$HOME/Library/Application Support/Code/User"
+iterm_plist="$repo_root/config/iterm2/com.googlecode.iterm2.plist"
 
 if command -v brew >/dev/null 2>&1; then
   mkdir -p "$repo_root/packages/homebrew"
@@ -18,20 +20,19 @@ if command -v code >/dev/null 2>&1; then
   code --list-extensions | sort > "$repo_root/packages/vscode/extensions.txt"
 fi
 
-if command -v npm >/dev/null 2>&1; then
-  npm list -g --depth=0 --json |
-    node -e '
-      let data = "";
-      process.stdin.on("data", chunk => data += chunk);
-      process.stdin.on("end", () => {
-        const parsed = JSON.parse(data);
-        const deps = parsed.dependencies || {};
-        Object.keys(deps).sort().forEach(name => {
-          const version = deps[name] && deps[name].version;
-          console.log(version ? `${name}@${version}` : name);
-        });
-      });
-    ' > "$repo_root/packages/npm/global-packages.txt"
+if [[ -f "$vscode_user_dir/settings.json" ]]; then
+  cp "$vscode_user_dir/settings.json" "$repo_root/config/vscode/User/settings.json"
+fi
+
+if [[ -f "$vscode_user_dir/keybindings.json" ]]; then
+  cp "$vscode_user_dir/keybindings.json" "$repo_root/config/vscode/User/keybindings.json"
+fi
+
+if command -v defaults >/dev/null 2>&1; then
+  mkdir -p "$(dirname "$iterm_plist")"
+  if defaults export com.googlecode.iterm2 "$iterm_plist" >/dev/null 2>&1; then
+    plutil -convert xml1 "$iterm_plist"
+  fi
 fi
 
 if command -v cargo >/dev/null 2>&1; then

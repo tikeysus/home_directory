@@ -1,7 +1,6 @@
 docker.docker
 formulahendry.code-runner
 github.vscode-github-actions
-mgmcdermott.vscode-language-babel
 ms-python.debugpy
 ms-python.python
 ms-python.vscode-pylance
