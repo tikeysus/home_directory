@@ -96,4 +96,6 @@ Use `*.local` files or a `local/` directory for private machine-specific overrid
 
 ## Shell Notes
 
-The tracked `.zshrc` is plain zsh: path setup, history, completion, aliases, and optional Powerlevel10k loading from `~/powerlevel10k`.
+The tracked `.zshrc` is plain zsh: path setup, history, completion, aliases, colorized `ls`, standalone `zsh-syntax-highlighting`, and optional Powerlevel10k loading from `~/powerlevel10k`.
+
+Powerlevel10k prompt settings live in tracked `.p10k.zsh` and include the current directory plus Git status when inside a repository.

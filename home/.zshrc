@@ -7,6 +7,32 @@ setopt append_history share_history hist_ignore_dups hist_ignore_space
 
 autoload -Uz compinit
 compinit
+zstyle ":completion:*" matcher-list \
+  "m:{a-zA-Z}={A-Za-z}" \
+  "m:{a-zA-Z}={A-Za-z} r:|[-_.]=* r:|=*" \
+  "m:{a-zA-Z}={A-Za-z} l:|=* r:|=*"
+zstyle ":completion:*" menu select
+zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"
+
+if command -v gls >/dev/null 2>&1; then
+  export LS_COLORS="di=01;34:ln=01;36:so=01;35:pi=33:ex=01;32:*.c=00;36:*.h=00;36:*.cpp=00;36:*.hpp=00;35:*.sh=01;32:*.zsh=01;32:*.py=01;32:*.rs=00;33:*.md=00;35:*.json=00;33:*.txt=00;37"
+
+  ls() {
+    if [[ -t 1 ]]; then
+      command gls -C --color=always "$@" | sed -E $'s/(^|[[:space:]])(\\.[^[:space:]\033]+)/\\1\033[2;37m\\2\033[0m/g'
+      return "$pipestatus[1]"
+    fi
+
+    command gls --color=auto "$@"
+  }
+else
+  export CLICOLOR=1
+  export LSCOLORS="ExGxFxDxCxegedabagacad"
+  alias ls="ls -G"
+fi
+
+alias la="ls -A"
+alias ll="ls -lah"
 
 # Git aliases
 alias add="git add"
@@ -86,7 +112,41 @@ export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
 if [[ -r "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
   source "$HOME/powerlevel10k/powerlevel10k.zsh-theme"
+  [[ ! -f "$HOME/.p10k.zsh" ]] || source "$HOME/.p10k.zsh"
+else
+  autoload -Uz vcs_info
+  zstyle ":vcs_info:*" enable git
+  zstyle ":vcs_info:git:*" check-for-changes true
+  zstyle ":vcs_info:git:*" stagedstr "+"
+  zstyle ":vcs_info:git:*" unstagedstr "*"
+  zstyle ":vcs_info:git:*" formats " %F{magenta}%b%f%F{yellow}%u%c%f"
+  zstyle ":vcs_info:git:*" actionformats " %F{magenta}%b|%a%f%F{yellow}%u%c%f"
+
+  precmd() {
+    vcs_info
+  }
+
+  setopt prompt_subst
+  PROMPT='%F{blue}%~%f${vcs_info_msg_0_} %(?.%F{green}.%F{red})❯%f '
 fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+typeset -gA ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+ZSH_HIGHLIGHT_STYLES[alias]="fg=green,bold"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=green,bold"
+ZSH_HIGHLIGHT_STYLES[command]="fg=green,bold"
+ZSH_HIGHLIGHT_STYLES[function]="fg=green,bold"
+ZSH_HIGHLIGHT_STYLES[hashed-command]="fg=green,bold"
+ZSH_HIGHLIGHT_STYLES[precommand]="fg=green,bold"
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=green,bold"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=red,bold"
+
+for zsh_highlight in \
+  /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; do
+  if [[ -r "$zsh_highlight" ]]; then
+    source "$zsh_highlight"
+    break
+  fi
+done
+unset zsh_highlight
