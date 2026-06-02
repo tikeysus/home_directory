@@ -34,7 +34,6 @@ From this repo:
 ./scripts/link-home.sh
 ./scripts/link-app-configs.sh
 ./scripts/install-packages.sh
-./scripts/install-oh-my-zsh.sh
 ./scripts/install-vscode-extensions.sh
 ./scripts/restore-iterm2.sh
 ```
@@ -97,9 +96,4 @@ Use `*.local` files or a `local/` directory for private machine-specific overrid
 
 ## Shell Notes
 
-The tracked `.zshrc` uses Oh My Zsh with these custom plugins:
-
-- `zsh-autosuggestions`
-- `zsh-syntax-highlighting`
-
-Run `./scripts/install-oh-my-zsh.sh` before opening a new zsh session on a fresh machine.
+The tracked `.zshrc` is plain zsh: path setup, history, completion, aliases, and optional Powerlevel10k loading from `~/powerlevel10k`.
