@@ -12,7 +12,6 @@ Personal home-directory setup: dotfiles, editor settings, package manifests, and
 │   ├── .gitconfig
 │   ├── .vimrc
 │   ├── bin/
-│   ├── .emacs.d/
 │   ├── .ssh/config
 │   └── .config/
 ├── config/                # App configs outside $HOME dotfile paths

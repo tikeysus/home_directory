@@ -25,8 +25,6 @@ cask "google-chrome"
 cask "iterm2"
 # Tool for designing and simulating digital logic circuits
 cask "logisim"
-# Replacement for Docker Desktop
-cask "orbstack"
 # Create, manage, and run virtual machines
 cask "vmware-fusion"
 vscode "docker.docker"
