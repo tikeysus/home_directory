@@ -14,6 +14,10 @@ zstyle ":completion:*" matcher-list \
 zstyle ":completion:*" menu select
 zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"
 
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+
 if command -v gls >/dev/null 2>&1; then
   export LS_COLORS="di=01;34:ln=01;36:so=01;35:pi=33:ex=01;32:*.c=00;36:*.h=00;36:*.cpp=00;36:*.hpp=00;35:*.sh=01;32:*.zsh=01;32:*.py=01;32:*.rs=00;33:*.md=00;35:*.json=00;33:*.txt=00;37"
 
