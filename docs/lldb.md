@@ -49,6 +49,245 @@ Open an existing executable:
 debug ./program -- arg1 arg2
 ```
 
+## Cheat Sheet
+
+### First Moves
+
+| Command | Use |
+| --- | --- |
+| `rehearse` | Print a short practice menu inside LLDB. |
+| `bmain` | Set a breakpoint on `main`. |
+| `rr` | Relaunch the current target. |
+| `so` | Step out of the current function. Same idea as `finish`. |
+| `reload_lldbinit` | Reload aliases and Python commands after editing `~/.lldbinit`. |
+
+Example:
+
+```lldb
+(lldb) bmain
+(lldb) rr
+(lldb) ctx
+```
+
+### Context And Stack
+
+| Command | Use |
+| --- | --- |
+| `ctx` | Show current function, nearby source, and typed locals. |
+| `cbt` | Show a compact backtrace for the selected thread. |
+| `btall` | Show backtraces for all threads. |
+| `fs 2` | Select frame 2. |
+| `up1` / `down1` | Move up or down one stack frame. |
+| `locals` | Show local variables with types. |
+| `target_paths` | Show executable, launch working directory, and current source path. |
+
+Example:
+
+```lldb
+(lldb) cbt
+(lldb) fs 2
+(lldb) ctx
+```
+
+### Breakpoints
+
+| Command | Use |
+| --- | --- |
+| `bfn name` | Break on function `name`. |
+| `bl` | List breakpoints. |
+| `bd 1` | Delete breakpoint 1. With no id, delete all breakpoints. |
+| `bdis 1` | Disable breakpoint 1. |
+| `ben 1` | Enable breakpoint 1. |
+
+Example:
+
+```lldb
+(lldb) bfn my_function
+(lldb) bl
+(lldb) rr
+```
+
+### Loop Navigation
+
+| Command | Use |
+| --- | --- |
+| `loopskip i=37` | From the current source line, continue until that same line is reached with `i == 37`. |
+| `lookskip i=37` | Same as `loopskip`; kept as a compatibility alias. |
+| `loopbreak 80` | Run naturally until line 80, usually the first line after a loop. |
+
+Example:
+
+```lldb
+(lldb) ctx
+(lldb) loopskip i=37
+(lldb) ctx
+```
+
+`loopskip` also accepts full conditions:
+
+```lldb
+(lldb) loopskip i > 100
+(lldb) loopskip count == target
+```
+
+### Inspection
+
+| Command | Use |
+| --- | --- |
+| `regs` | Read registers. |
+| `disf` | Disassemble the selected frame. |
+| `im symbol` | Look up a symbol or address in loaded images. |
+| `symtab` | Dump target module symbol tables. |
+| `ptype expr` | Evaluate an expression and show its type. |
+
+Example:
+
+```lldb
+(lldb) locals
+(lldb) ptype my_value
+(lldb) disf
+```
+
+### Memory
+
+| Command | Use |
+| --- | --- |
+| `xw 8 addr` | Read 8 four-byte words at `addr`, formatted as hex. |
+| `xg 8 addr` | Read 8 eight-byte words at `addr`, formatted as hex. |
+
+Example:
+
+```lldb
+(lldb) p &buffer[0]
+(lldb) xw 16 0x000000016fdff120
+```
+
+### Watch-Style Displays
+
+These are built-in LLDB commands worth remembering alongside the custom aliases:
+
+| Command | Use |
+| --- | --- |
+| `display expr` | Print `expr` every time execution stops. This is closest to a debugger watch panel. |
+| `undisplay 1` | Stop displaying expression 1. |
+| `target stop-hook list` | List display/stop hooks. |
+| `watchpoint set variable name` | Stop when variable `name` is written. |
+| `watchpoint list` | List watchpoints. |
+| `watchpoint delete 1` | Delete watchpoint 1. |
+
+Example:
+
+```lldb
+(lldb) display i
+(lldb) display total
+(lldb) n
+(lldb) n
+(lldb) undisplay 1
+```
+
+## Git Cheat Sheet
+
+These aliases live in `home/.zshrc`, which should be linked to `~/.zshrc`.
+
+### Daily Flow
+
+| Command | Use |
+| --- | --- |
+| `status` | Show the current branch and short working tree status. |
+| `add file` | Stage specific files. |
+| `aa` | Stage all changes in the repo. |
+| `commit "message"` | Commit staged changes with a message. |
+| `amend` | Amend the last commit. |
+| `pull` | Pull using the current branch's configured upstream. |
+| `pullbranch` | Pull the current branch explicitly from `origin`. |
+| `push` | Push the current branch to `origin` and set upstream. |
+
+Example:
+
+```sh
+status
+add src/app.js
+commit "Add project dashboard"
+push
+```
+
+### Branches
+
+| Command | Use |
+| --- | --- |
+| `branch` | List local branches. |
+| `branches` | List local and remote branches. |
+| `switch name` | Switch to an existing branch. |
+| `newbranch name` | Create and switch to a new branch. |
+| `deletebranch name` | Delete a merged local branch. |
+| `force-deletebranch name` | Delete a local branch even if it is unmerged. |
+
+Example:
+
+```sh
+fetch
+newbranch feature/payment-flow
+```
+
+### Sync And Review
+
+| Command | Use |
+| --- | --- |
+| `fetch` | Fetch all remotes and prune deleted remote branches. |
+| `remotes` | Show configured remotes. |
+| `log` | Show a compact graph of all branches. |
+| `last` | Show the latest commit with changed files. |
+| `diff` | Show unstaged changes. |
+| `staged` | Show staged changes. |
+| `showcommit hash` | Inspect a commit. |
+
+Example:
+
+```sh
+fetch
+log
+staged
+```
+
+### Merge And Rebase
+
+| Command | Use |
+| --- | --- |
+| `merge branch` | Merge another branch into the current branch. |
+| `rebase branch` | Rebase the current branch onto another branch. |
+| `rebasemain` | Fetch and rebase onto `origin/main`. |
+| `rebasemaster` | Fetch and rebase onto `origin/master`. |
+| `abortmerge` | Abort an in-progress merge. |
+| `abortrebase` | Abort an in-progress rebase. |
+| `continuerebase` | Continue a rebase after resolving conflicts. |
+
+Example:
+
+```sh
+fetch
+rebasemain
+continuerebase
+```
+
+### Stash And Cleanup
+
+| Command | Use |
+| --- | --- |
+| `stash "message"` | Save local changes with a message. |
+| `stashlist` | List saved stashes. |
+| `popstash` | Apply and remove the latest stash. |
+| `unstage file` | Remove a file from the staged set. |
+| `discard file` | Discard local changes to a file. |
+| `cleanbranches` | Prune deleted remote-tracking branches. |
+
+Example:
+
+```sh
+stash "wip before rebase"
+rebasemain
+popstash
+```
+
 ## Personal Commands
 
 - `rehearse`: print a short practice menu.
