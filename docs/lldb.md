@@ -130,6 +130,8 @@ Example:
 (lldb) loopskip count == target
 ```
 
+If an ordinary breakpoint is still enabled on the same line, LLDB may stop on that breakpoint before the `loopskip` condition is reached. Disable or delete that breakpoint first with `bdis <id>` or `bd <id>`.
+
 ### Inspection
 
 | Command | Use |

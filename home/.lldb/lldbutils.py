@@ -28,6 +28,38 @@ def _print(result, text=""):
     print(text, file=result)
 
 
+def _run_command(debugger, command):
+    command_result = lldb.SBCommandReturnObject()
+    debugger.GetCommandInterpreter().HandleCommand(command, command_result)
+    return command_result
+
+
+def _print_command_result(result, command_result):
+    output = command_result.GetOutput()
+    error = command_result.GetError()
+    if output:
+        _print(result, output.rstrip())
+    if error:
+        _print(result, error.rstrip())
+
+
+def _file_spec_path(file_spec):
+    if not file_spec or not file_spec.IsValid():
+        return None
+
+    path = getattr(file_spec, "fullpath", None)
+    if path:
+        return path
+
+    directory = file_spec.GetDirectory()
+    filename = file_spec.GetFilename()
+    if directory and filename:
+        return os.path.join(directory, filename)
+    if filename:
+        return filename
+    return None
+
+
 def _current_source_location(debugger):
     frame = _selected_frame(debugger)
     if frame is None:
@@ -38,7 +70,7 @@ def _current_source_location(debugger):
     if not file_spec or not file_spec.IsValid() or line_entry.GetLine() == 0:
         return None, None
 
-    return file_spec.GetPath(), line_entry.GetLine()
+    return _file_spec_path(file_spec), line_entry.GetLine()
 
 
 def _normalize_condition(command):
@@ -67,7 +99,7 @@ def ctx(debugger, command, result, internal_dict):
 
     line_entry = frame.GetLineEntry()
     file_spec = line_entry.GetFileSpec()
-    path = file_spec.GetPath() if file_spec and file_spec.IsValid() else None
+    path = _file_spec_path(file_spec)
     line = line_entry.GetLine()
     function = frame.GetFunctionName() or "<unknown>"
 
@@ -102,13 +134,15 @@ def bmain(debugger, command, result, internal_dict):
 def rehearse(debugger, command, result, internal_dict):
     """Print a short LLDB practice menu for the current session."""
     _print(result, "LLDB reps:")
-    _print(result, "  bfl file.c 42       set breakpoint by file and line")
     _print(result, "  bfn function_name   set breakpoint by function")
     _print(result, "  rr                  launch again")
-    _print(result, "  n / s / finish      next, step in, step out")
+    _print(result, "  n / s / so          next, step in, step out")
     _print(result, "  ctx                 source + locals at the selected frame")
     _print(result, "  cbt                 compact backtrace")
+    _print(result, "  loopskip i=37       continue until this line has i == 37")
+    _print(result, "  loopbreak 80        run until line 80")
     _print(result, "  locals              typed locals")
+    _print(result, "  display value       print value every time execution stops")
     _print(result, "  expr -- value       evaluate an expression")
     _print(result, "  memory read addr    inspect memory")
     _print(result, "  apropos keyword     discover commands by topic")
@@ -127,7 +161,7 @@ def target_paths(debugger, command, result, internal_dict):
         _print(result, "No selected target.")
         return
 
-    exe = target.GetExecutable().GetPath()
+    exe = _file_spec_path(target.GetExecutable()) or "<unknown>"
     launch_info = target.GetLaunchInfo()
     cwd = launch_info.GetWorkingDirectory() or os.getcwd()
     _print(result, f"exe: {exe}")
@@ -137,8 +171,9 @@ def target_paths(debugger, command, result, internal_dict):
     if frame:
         line_entry = frame.GetLineEntry()
         file_spec = line_entry.GetFileSpec()
-        if file_spec and file_spec.IsValid():
-            _print(result, f"src: {file_spec.GetPath()}:{line_entry.GetLine()}")
+        path = _file_spec_path(file_spec)
+        if path:
+            _print(result, f"src: {path}:{line_entry.GetLine()}")
 
 
 def loopskip(debugger, command, result, internal_dict):
@@ -158,9 +193,18 @@ def loopskip(debugger, command, result, internal_dict):
         f"--file {shlex.quote(path)} --line {line} "
         f"--condition {shlex.quote(condition)}"
     )
+    breakpoint_result = _run_command(debugger, cmd)
+    if not breakpoint_result.Succeeded():
+        _print(result, "Could not set loopskip breakpoint:")
+        _print_command_result(result, breakpoint_result)
+        return
+
+    _print_command_result(result, breakpoint_result)
     _print(result, f"Continuing until {os.path.basename(path)}:{line} where {condition}")
-    debugger.HandleCommand(cmd)
-    debugger.HandleCommand("continue")
+    continue_result = _run_command(debugger, "continue")
+    if not continue_result.Succeeded():
+        _print(result, "Could not continue:")
+        _print_command_result(result, continue_result)
 
 
 def lookskip(debugger, command, result, internal_dict):
@@ -180,7 +224,10 @@ def loopbreak(debugger, command, result, internal_dict):
         return
 
     _print(result, f"Running until line {args[0]}")
-    debugger.HandleCommand(f"thread until {args[0]}")
+    until_result = _run_command(debugger, f"thread until {args[0]}")
+    if not until_result.Succeeded():
+        _print(result, "Could not run until that line:")
+        _print_command_result(result, until_result)
 
 
 def __lldb_init_module(debugger, internal_dict):
