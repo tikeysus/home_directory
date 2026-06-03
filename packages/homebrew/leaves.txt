@@ -6,4 +6,5 @@ gh
 rust
 tree
 zoxide
+zsh-autosuggestions
 zsh-syntax-highlighting

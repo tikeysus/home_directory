@@ -135,6 +135,7 @@ else
 fi
 
 typeset -gA ZSH_HIGHLIGHT_STYLES
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 ZSH_HIGHLIGHT_STYLES[alias]="fg=green,bold"
 ZSH_HIGHLIGHT_STYLES[builtin]="fg=green,bold"
@@ -144,6 +145,16 @@ ZSH_HIGHLIGHT_STYLES[hashed-command]="fg=green,bold"
 ZSH_HIGHLIGHT_STYLES[precommand]="fg=green,bold"
 ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=green,bold"
 ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=red,bold"
+
+for zsh_autosuggest in \
+  /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh; do
+  if [[ -r "$zsh_autosuggest" ]]; then
+    source "$zsh_autosuggest"
+    break
+  fi
+done
+unset zsh_autosuggest
 
 for zsh_highlight in \
   /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
