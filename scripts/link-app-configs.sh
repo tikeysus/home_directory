@@ -36,3 +36,14 @@ link_file() {
 vscode_user_dir="$HOME/Library/Application Support/Code/User"
 link_file "$repo_root/config/vscode/User/settings.json" "$vscode_user_dir/settings.json"
 link_file "$repo_root/config/vscode/User/keybindings.json" "$vscode_user_dir/keybindings.json"
+
+claude_dir="$HOME/.claude"
+claude_src="$repo_root/config/claude"
+mkdir -p "$claude_dir/hooks"
+link_file "$claude_src/CLAUDE.md" "$claude_dir/CLAUDE.md"
+link_file "$claude_src/settings.json" "$claude_dir/settings.json"
+link_file "$claude_src/settings.local.json" "$claude_dir/settings.local.json"
+link_file "$claude_src/keybindings.json" "$claude_dir/keybindings.json"
+for f in "$claude_src/hooks/"*.js; do
+  [[ -f "$f" ]] && link_file "$f" "$claude_dir/hooks/$(basename "$f")"
+done

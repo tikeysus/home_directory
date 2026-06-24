@@ -117,7 +117,8 @@ git add -A -- README.md Makefile scripts/update-repo.sh scripts/snapshot.sh scri
   packages/Brewfile packages/homebrew \
   packages/cargo/installed.txt packages/vscode/extensions.txt \
   config/vscode/User/settings.json config/vscode/User/keybindings.json \
-  config/iterm2/com.googlecode.iterm2.plist
+  config/iterm2/com.googlecode.iterm2.plist \
+  config/claude
 
 if git diff --cached --quiet; then
   echo "No staged snapshot changes to commit."

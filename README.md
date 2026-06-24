@@ -16,7 +16,8 @@ Personal home-directory setup: dotfiles, editor settings, package manifests, and
 │   └── .config/
 ├── config/                # App configs outside $HOME dotfile paths
 │   ├── iterm2/
-│   └── vscode/User/
+│   ├── vscode/User/
+│   └── claude/            # Claude Code: CLAUDE.md, settings, keybindings, hooks
 ├── packages/              # Reinstall manifests and package snapshots
 │   ├── Brewfile
 │   ├── homebrew/
@@ -93,6 +94,19 @@ Note: files like `.zshrc` and `.vimrc` are hidden dotfiles. Use `ls -la home` to
 - Machine-only files that do not make sense on a fresh install.
 
 Use `*.local` files or a `local/` directory for private machine-specific overrides.
+
+## Claude Code Notes
+
+`config/claude/` tracks the user-level Claude Code configuration from `~/.claude/`:
+
+- `CLAUDE.md` — global user preferences and behavior overrides
+- `settings.json` — theme, effort level, and hook wiring
+- `settings.local.json` — per-machine tool permission allowlist
+- `keybindings.json` — keyboard binding overrides
+- `hooks/auto-stage.js` — PostToolUse hook: auto-stages files after Edit/Write
+- `hooks/block-dangerous-commands.js` — PreToolUse hook: blocks dangerous Bash patterns
+
+`link-app-configs.sh` creates symlinks from `~/.claude/` to the tracked repo files. `snapshot.sh` copies the current state back into the repo. Not tracked: skills and plugins (marketplace-managed), runtime state (cache, sessions, history, daemon files).
 
 ## Shell Notes
 
