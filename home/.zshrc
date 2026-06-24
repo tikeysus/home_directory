@@ -71,6 +71,11 @@ pullbranch() {
   git pull origin "$branch"
 }
 
+claude() {
+  command claude "$@"
+  terminal-notifier -title "Claude Code" -message "Waiting for input or done" -sound Glass -activate com.apple.Terminal
+}
+
 alias branch="git branch"
 alias branches="git branch -a"
 alias checkout="git checkout"
