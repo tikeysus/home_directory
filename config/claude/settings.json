@@ -1,29 +1,21 @@
 {
-  "theme": "dark",
-  "effortLevel": "medium",
+  "permissions": {
+    "allow": [
+      "Bash(gh issue *)",
+      "Bash(gh pr *)",
+      "Bash(gh repo *)",
+      "Bash(gh run *)",
+      "Bash(gh release *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git status)",
+      "Bash(git show *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)"
+    ]
+  },
+  "model": "haiku",
   "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/tikeysus/.claude/hooks/notify.sh"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/tikeysus/.claude/hooks/notify.sh"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -46,5 +38,7 @@
         ]
       }
     ]
-  }
+  },
+  "effortLevel": "medium",
+  "theme": "dark"
 }

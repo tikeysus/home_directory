@@ -46,6 +46,16 @@ function isInGitRepo(filePath) {
   }
 }
 
+function isGitIgnored(filePath) {
+  try {
+    const dir = path.dirname(filePath);
+    execSync(`git check-ignore "${filePath}"`, { cwd: dir, stdio: 'pipe' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function stageFile(filePath) {
   try {
     const dir = path.dirname(filePath);
@@ -82,6 +92,11 @@ async function main() {
       return console.log('{}');
     }
 
+    if (isGitIgnored(absPath)) {
+      log({ level: 'SKIP', reason: 'gitignored', file: absPath, session_id });
+      return console.log('{}');
+    }
+
     const result = stageFile(absPath);
     if (result.success) {
       log({ level: 'STAGED', file: absPath, tool: tool_name, session_id });
@@ -99,5 +114,5 @@ async function main() {
 if (require.main === module) {
   main();
 } else {
-  module.exports = { isInGitRepo, stageFile, log };
+  module.exports = { isInGitRepo, isGitIgnored, stageFile, log };
 }
