@@ -1,5 +1,18 @@
 # Global Claude Configuration
 
+## Documentation 
+- Before writing or adding any documentation files (`.md`, `.txt`, etc.) or anything that consumes extra context, ask for permission.
+- When asking, you MUST include:
+  - **What:** File name and purpose (e.g., "ARCHITECTURE.md to document sync patterns")
+  - **Why:** Why this document is necessary (e.g., "for future agents to understand X without reading all of Y")
+  - **Cost:** Estimated lines, context window impact, ongoing maintenance burden
+  - **Redundancy check:** Whether this info already exists in code, tests, or git history
+  - **Alternative:** If the info could live in code comments, docstrings, or commit messages instead
+- Do not create documentation files without explicit approval. If unsure, ask.
+
+## Explaining New Concepts 
+- Always use examples relevant to the question and project when explaining new concepts. 
+
 ## Branching
 - New features always go on a dedicated branch. Never commit new feature work directly to main.
 - Refer to project workspace for branch naming conventions.
@@ -31,6 +44,7 @@
 - Every malloc/calloc must have a corresponding free; mark with
   an inline comment if the free is non-local.
 - Inline comments for non-obvious decisions — explain why, not what.
+- Indent using tabs and not spaces.
 
 ## Response Style
 - Provide a concise summary only when a task is fully complete: files changed, decisions made, open questions.

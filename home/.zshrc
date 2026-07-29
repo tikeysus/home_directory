@@ -113,6 +113,16 @@ lcnew() {
 
   "$root/scripts/new" "$@"
 }
+
+leet_clean() {
+  local root
+  root="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+    echo "Not inside a git repo"
+    return 1
+  }
+
+  "$root/scripts/clean" "$@"
+}
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
 if [[ -r "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]]; then

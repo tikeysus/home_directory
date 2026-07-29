@@ -2,7 +2,7 @@
 /**
  * Auto Stage - PostToolUse Hook for Edit|Write
  * Automatically stages files after Claude Code modifies them.
- * Logs to: ~/.claude/hooks-logs/
+ * Logs to: ~/.codex/hooks-logs/
  *
  * Benefits:
  *   - `git status` shows exactly what Claude modified
@@ -11,7 +11,7 @@
  *
  * Note: Relies on .gitignore to exclude sensitive files (.env, keys, etc.)
  *
- * Setup in .claude/settings.json:
+ * Setup in .codex/settings.json:
  * {
  *   "hooks": {
  *     "PostToolUse": [{
@@ -26,7 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const LOG_DIR = path.join(process.env.HOME, '.claude', 'hooks-logs');
+const LOG_DIR = path.join(process.env.HOME, '.codex', 'hooks-logs');
 
 function log(data) {
   try {

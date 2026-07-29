@@ -39,6 +39,7 @@
       }
     ]
   },
+  "disabledMcpjsonServers": ["claude.ai Strava"],
   "effortLevel": "medium",
   "theme": "dark"
 }

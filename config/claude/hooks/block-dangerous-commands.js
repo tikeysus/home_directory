@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
  * Block Dangerous Commands - PreToolUse Hook for Bash
- * Blocks dangerous patterns before execution. Logs to: ~/.claude/hooks-logs/
+ * Blocks dangerous patterns before execution. Logs to: ~/.codex/hooks-logs/
  *
  * SAFETY_LEVEL: 'critical' | 'high' | 'strict'
  *   critical - Only catastrophic: rm -rf ~, dd to disk, fork bombs
  *   high     - + risky: force push main, secrets exposure, git reset --hard
  *   strict   - + cautionary: any force push, sudo rm, docker prune
  *
- * Setup in .claude/settings.json:
+ * Setup in .codex/settings.json:
  * {
  *   "hooks": {
  *     "PreToolUse": [{
@@ -59,7 +59,7 @@ const PATTERNS = [
 
 const LEVELS = { critical: 1, high: 2, strict: 3 };
 const EMOJIS = { critical: '🚨', high: '⛔', strict: '⚠️' };
-const LOG_DIR = path.join(process.env.HOME, '.claude', 'hooks-logs');
+const LOG_DIR = path.join(process.env.HOME, '.codex', 'hooks-logs');
 
 function log(data) {
   try {
