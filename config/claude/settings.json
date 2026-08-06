@@ -40,6 +40,10 @@
     ]
   },
   "disabledMcpjsonServers": ["claude.ai Strava"],
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
   "effortLevel": "medium",
   "theme": "dark"
 }

@@ -43,7 +43,7 @@ claude_dir="$HOME/.claude"
 claude_dest="$repo_root/config/claude"
 if [[ -d "$claude_dir" ]]; then
   mkdir -p "$claude_dest/hooks"
-  for f in CLAUDE.md settings.json settings.local.json keybindings.json; do
+  for f in CLAUDE.md settings.json settings.local.json keybindings.json statusline.sh; do
     # skip files that are already symlinked into the repo
     [[ -L "$claude_dir/$f" ]] && continue
     [[ -f "$claude_dir/$f" ]] && cp "$claude_dir/$f" "$claude_dest/$f"
