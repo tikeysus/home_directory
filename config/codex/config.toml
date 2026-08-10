@@ -1,5 +1,11 @@
 model = "gpt-5.5"
 model_reasoning_effort = "medium"
+
+[tui]
+status_line = ["git-branch", "current-dir", "model-with-reasoning", "context-used", "five-hour-limit", "weekly-limit"]
+status_line_use_colors = true
+terminal_title = ["git-branch", "current-dir", "model-with-reasoning", "context-used", "five-hour-limit", "weekly-limit"]
+
 [projects."/Users/tikeysus"]
 trust_level = "trusted"
 
