@@ -14,7 +14,10 @@
       "Bash(git remote *)"
     ]
   },
-  "model": "haiku",
+  "model": "sonnet",
+  "disabledMcpjsonServers": [
+    "claude.ai Strava"
+  ],
   "hooks": {
     "PreToolUse": [
       {
@@ -37,9 +40,41 @@
           }
         ]
       }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/bin/node /Users/tikeysus/.claude/hooks/notify.js"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/bin/node /Users/tikeysus/.claude/hooks/notify.js"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/bin/node /Users/tikeysus/.claude/hooks/notify.js"
+          }
+        ]
+      }
     ]
   },
-  "disabledMcpjsonServers": ["claude.ai Strava"],
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"

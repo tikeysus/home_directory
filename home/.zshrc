@@ -5,6 +5,14 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt append_history share_history hist_ignore_dups hist_ignore_space
 
+bindkey -e
+
+# Word navigation and deletion
+bindkey "^[[1;3D" backward-word
+bindkey "^[[1;3C" forward-word
+bindkey "^[[3;3~" kill-word
+bindkey "^[^?" backward-kill-word
+
 autoload -Uz compinit
 compinit
 zstyle ":completion:*" matcher-list \
@@ -122,6 +130,27 @@ leet_clean() {
   }
 
   "$root/scripts/clean" "$@"
+}
+
+brew() {
+  local before after
+  before="$(readlink /opt/homebrew/bin/claude 2>/dev/null)"
+
+  command brew "$@"
+  local brew_status=$?
+
+  after="$(readlink /opt/homebrew/bin/claude 2>/dev/null)"
+
+  if [[ -n "$after" && "$after" != "$before" ]]; then
+    echo "claude-code binary changed:"
+    echo "  $before"
+    echo "  -> $after"
+    echo "Grant it Full Disk Access — revealing it in Finder and opening Settings..."
+    open -R /opt/homebrew/bin/claude
+    open "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
+  fi
+
+  return $brew_status
 }
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 

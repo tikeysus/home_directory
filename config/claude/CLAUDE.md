@@ -10,6 +10,9 @@
   - **Alternative:** If the info could live in code comments, docstrings, or commit messages instead
 - Do not create documentation files without explicit approval. If unsure, ask.
 
+## Worktrees
+- When asked to create a worktree, place it under `main_project_dir/worktrees/`, not `main_project_dir/.claude/worktrees/`.
+
 ## Explaining New Concepts 
 - Always use examples relevant to the question and project when explaining new concepts. 
 
@@ -49,4 +52,5 @@
 ## Response Style
 - Provide a concise summary only when a task is fully complete: files changed, decisions made, open questions.
 - Brief explanation is welcome when a decision is non-obvious.
+- When asked to explain something, do not create artifacts — explain with plain words and examples instead.
     

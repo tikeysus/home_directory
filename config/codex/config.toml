@@ -1,5 +1,5 @@
-model = "gpt-5.5"
-model_reasoning_effort = "medium"
+model = "gpt-5.4-mini"
+model_reasoning_effort = "low"
 
 [tui]
 status_line = ["git-branch", "current-dir", "model-with-reasoning", "context-used", "five-hour-limit", "weekly-limit"]
