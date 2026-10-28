@@ -154,6 +154,9 @@ brew() {
 }
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
+alias start-kali="$HOME/Documents/thm/vpn_linux/kali-vm/start-kali.sh"
+alias stop-kali="$HOME/Documents/thm/vpn_linux/kali-vm/stop-kali.sh"
+
 if [[ -r "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
   source "$HOME/powerlevel10k/powerlevel10k.zsh-theme"
   [[ ! -f "$HOME/.p10k.zsh" ]] || source "$HOME/.p10k.zsh"
