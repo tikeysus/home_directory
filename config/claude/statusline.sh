@@ -14,17 +14,25 @@ COLOR_MODEL='\033[36m'    # cyan
 COLOR_RATE='\033[32m'     # green
 RESET='\033[0m'
 DIM='\033[2m'
+LABEL='\033[1;37m'       # bold bright white - used for field labels (directory:, model:, etc.) for contrast
 
-# --- Line 1, field 1: current directory (basename) ---
+# --- Line 1, field 1: current directory (git-relative with repo name, or basename) ---
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
-dir_name=$(basename "$cwd")
-line1_segments=("$(printf "${DIM}directory:${RESET} ${COLOR_DIR}%s${RESET}" "$dir_name")")
+if cd "$cwd" 2>/dev/null && GIT_OPTIONAL_LOCKS=0 git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+	repo_root=$(GIT_OPTIONAL_LOCKS=0 git rev-parse --show-toplevel)
+	repo_name=$(basename "$repo_root")
+	rel_path=$(GIT_OPTIONAL_LOCKS=0 git rev-parse --show-prefix | sed 's,/$,,')
+	dir_name="$repo_name/$rel_path"
+else
+	dir_name=$(basename "$cwd")
+fi
+line1_segments=("$(printf "${LABEL}directory:${RESET} ${COLOR_DIR}%s${RESET}" "$dir_name")")
 
 # --- Line 1, field 2: git branch (omit if not a repo) ---
 if [ -n "$cwd" ] && GIT_OPTIONAL_LOCKS=0 git -C "$cwd" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 	branch=$(GIT_OPTIONAL_LOCKS=0 git -C "$cwd" branch --show-current 2>/dev/null)
 	if [ -n "$branch" ]; then
-		line1_segments+=("$(printf "${DIM}branch:${RESET} ${COLOR_BRANCH}%s${RESET}" "$branch")")
+		line1_segments+=("$(printf "${LABEL}branch:${RESET} ${COLOR_BRANCH}%s${RESET}" "$branch")")
 	fi
 fi
 
@@ -32,7 +40,7 @@ fi
 model=$(echo "$input" | jq -r '.model.display_name // empty')
 line2_segments=()
 if [ -n "$model" ]; then
-	line2_segments+=("$(printf "${DIM}model:${RESET} ${COLOR_MODEL}%s${RESET}" "$model")")
+	line2_segments+=("$(printf "${LABEL}model:${RESET} ${COLOR_MODEL}%s${RESET}" "$model")")
 fi
 
 # --- Line 2, field 2: context window used percentage (color-scaled) ---
@@ -46,7 +54,7 @@ if [ -n "$used" ]; then
 	else
 		color='\033[32m' # green
 	fi
-	line2_segments+=("$(printf "${DIM}context:${RESET} ${color}%s%% used${RESET}" "$used_int")")
+	line2_segments+=("$(printf "${LABEL}context:${RESET} ${color}%s%% used${RESET}" "$used_int")")
 fi
 
 # --- Line 2, field 3: rate limits (5h / 7d), omit entirely if neither present ---
@@ -59,7 +67,7 @@ if [ -n "$five" ] || [ -n "$week" ]; then
 		[ -n "$rate_str" ] && rate_str="$rate_str "
 		rate_str="${rate_str}7d:$(printf '%.0f' "$week")%"
 	fi
-	line2_segments+=("$(printf "${DIM}limits:${RESET} ${COLOR_RATE}%s${RESET}" "$rate_str")")
+	line2_segments+=("$(printf "${LABEL}limits:${RESET} ${COLOR_RATE}%s${RESET}" "$rate_str")")
 fi
 
 # Join a segment array with a dim " | " delimiter

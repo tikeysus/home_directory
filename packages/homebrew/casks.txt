@@ -1,6 +1,10 @@
 brave-browser 1.63.169.0
+claude-code 2.1.308
 emacs-app 29.4-1
 google-chrome 130.0.6723.117
 iterm2 3.6.5
 logisim 2.7.1
+orbstack 2.2.1,20628
+tigervnc 1.16.2
+utm 4.7.5
 vmware-fusion 13.6.1,24319021

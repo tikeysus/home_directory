@@ -7,7 +7,7 @@ iterm_plist="$repo_root/config/iterm2/com.googlecode.iterm2.plist"
 
 if command -v brew >/dev/null 2>&1; then
   mkdir -p "$repo_root/packages/homebrew"
-  brew bundle dump --file="$repo_root/packages/Brewfile" --force --describe
+  brew bundle dump --file="$repo_root/packages/Brewfile" --force
   brew tap > "$repo_root/packages/homebrew/taps.txt"
   brew list --formula --versions | sort > "$repo_root/packages/homebrew/formulae.txt"
   brew list --cask --versions | sort > "$repo_root/packages/homebrew/casks.txt"

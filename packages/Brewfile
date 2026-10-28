@@ -5,12 +5,46 @@ brew "cmake"
 brew "coreutils"
 # Pack, ship and run any application as a lightweight container
 brew "docker"
+# Command-line fuzzy finder written in Go
+brew "fzf"
 # GNU compiler collection
 brew "gcc"
 # GitHub command-line tool
 brew "gh"
+# Quickly rewrite git repository history
+brew "git-filter-repo"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
+# World's fastest and most advanced password recovery utility
+brew "hashcat"
+# Cross-platform program for developing Haskell projects
+brew "haskell-stack"
+# Next-gen compiler infrastructure
+brew "llvm"
+# Modern hash identification system
+brew "name-that-hash"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
+brew "openvpn"
+# Pinentry for GPG on Mac
+brew "pinentry-mac"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
+# Generic machine emulator and virtualizer
+brew "qemu"
+# Tools for and transforming and inspecting PDF files
+brew "qpdf"
 # Safe, concurrent, practical language
 brew "rust"
+# ISO/Edinburgh-style Prolog interpreter
+brew "swi-prolog"
+# Send macOS User Notifications from the command-line
+brew "terminal-notifier"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # Shell extension to navigate your filesystem faster
@@ -21,25 +55,38 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 # Web browser focusing on privacy
 cask "brave-browser"
-# Text editor
+# Terminal-based AI coding assistant
+cask "claude-code", args: { language: "atest" }
+# GNU Emacs text editor
 cask "emacs-app"
 # Web browser
 cask "google-chrome"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
-# Tool for designing and simulating digital logic circuits
 cask "logisim"
+# Replacement for Docker Desktop
+cask "orbstack"
+# Multi-platform VNC client and server
+cask "tigervnc"
+# Virtual machines UI using QEMU
+cask "utm"
 # Create, manage, and run virtual machines
 cask "vmware-fusion"
+vscode "justusadam.language-haskell"
 vscode "ms-python.debugpy"
 vscode "ms-python.python"
 vscode "ms-python.vscode-pylance"
 vscode "ms-python.vscode-python-envs"
+vscode "ms-vscode-remote.remote-ssh"
+vscode "ms-vscode-remote.remote-ssh-edit"
 vscode "ms-vscode.cpp-devtools"
 vscode "ms-vscode.cpptools"
 vscode "ms-vscode.cpptools-extension-pack"
 vscode "ms-vscode.cpptools-themes"
+vscode "ms-vscode.remote-explorer"
 vscode "rust-lang.rust-analyzer"
 vscode "vadimcn.vscode-lldb"
+cargo "cargo-audit"
 cargo "cargo-modules"
 cargo "evcxr_repl"
+npm "@openai/codex"
