@@ -16,6 +16,17 @@
 ## Explaining New Concepts 
 - Always use examples relevant to the question and project when explaining new concepts. 
 
+## Incremental Explanation
+- Never deliver an explanation, status report, or plan as one large blob.
+- Roll it out step by step: explain ONE concept or section at a time, then stop
+  and ask whether I want more elaboration or whether we can move on.
+- Wait for my answer before continuing to the next step. Do not pre-empt by
+  dumping the remaining steps "for context".
+- When theory is involved, offer a short background write-up or a link to
+  reading material so I can go deeper on my own, before moving on.
+- This applies to status updates ("what's done / what's left"), architecture
+  walkthroughs, code explanations, and planning discussions alike.
+
 ## Branching
 - New features always go on a dedicated branch. Never commit new feature work directly to main.
 - Refer to project workspace for branch naming conventions.
