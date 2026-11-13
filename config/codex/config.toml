@@ -1,10 +1,11 @@
-model = "gpt-5.4-mini"
-model_reasoning_effort = "low"
+model = "gpt-6-luna"
+model_reasoning_effort = "medium"
 
 [tui]
 status_line = ["git-branch", "current-dir", "model-with-reasoning", "context-used", "five-hour-limit", "weekly-limit"]
 status_line_use_colors = true
 terminal_title = ["git-branch", "current-dir", "model-with-reasoning", "context-used", "five-hour-limit", "weekly-limit"]
+screen_reader_detection_done = true
 
 [projects."/Users/tikeysus"]
 trust_level = "trusted"
@@ -14,6 +15,17 @@ trust_level = "trusted"
 
 [projects."/Users/tikeysus/.codex/skills"]
 trust_level = "trusted"
+
+[projects."/Users/tikeysus/Documents/projects/family_archive"]
+trust_level = "trusted"
+
+[notice.model_migrations]
+"gpt-5.4-mini" = "gpt-6-luna"
+
+[hooks.state]
+
+[hooks.state."/Users/tikeysus/Documents/projects/family_archive/.codex/config.toml:stop:0:0"]
+trusted_hash = "sha256:a32dfa3f176fdc0a64d123447daab4ba1377646b3c0d85c412f238fa4f101aa6"
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
