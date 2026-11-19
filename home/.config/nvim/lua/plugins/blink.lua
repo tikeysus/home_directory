@@ -7,6 +7,11 @@ return {
 					-- don't auto-show the completion menu while typing
 					auto_show = false,
 				},
+				-- LazyVim turns ghost text on when the ai_cmp extra is active;
+				-- keep the inline preview off so only the menu suggests completions
+				ghost_text = {
+					enabled = false,
+				},
 			},
 			keymap = {
 				-- accept the current suggestion (ghost text) with Tab,
